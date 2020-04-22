@@ -1,0 +1,40 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2018-05-01/subscriptionDeploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "name": {
+           "type": "string",
+           "metadata": {
+                "description": "The name for your resource group"
+            }
+        },
+        "env": {
+           "type": "string",
+           "metadata": {
+                "description": "environment to deploy to"
+            }
+        },
+        "location": {
+           "type": "string",
+           "defaultValue": "West Europe",
+           "metadata": {
+                "description": "location for the resource group"
+            }
+        }
+    },
+    "variables": {
+        "rgName": "[concat(parameters('name'), '-', parameters('env'))]"
+    },
+    "resources": [
+        {
+            "name": "[variables('rgName')]",
+            "type": "Microsoft.Resources/resourceGroups",
+            "apiVersion": "2019-10-01",
+            "location": "[parameters('location')]",
+            "tags": {},
+            "properties": {
+            }
+        }
+    ],
+    "outputs": {}
+}
