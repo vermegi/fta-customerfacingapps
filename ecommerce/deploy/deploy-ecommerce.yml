@@ -35,5 +35,5 @@ steps:
     location: 'South Africa North'
     templateLocation: 'Linked artifact'
     csmFile: '$(build.artifactstagingdirectory)/arm/azuredeploy.rg.json'
-    overrideParameters: '-name gitte-fta-ecommerce -env dev -location southafricanorth'
+    overrideParameters: '-name demo-fta-ecommerce -env dev -location southafricanorth'
     deploymentMode: 'Incremental'
