@@ -1,0 +1,82 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "name": {
+           "type": "string",
+           "metadata": {
+                "description": "The name for your resource group"
+            }
+        },
+        "env": {
+           "type": "string",
+           "metadata": {
+                "description": "environment to deploy to"
+            }
+        },
+        "prefix": {
+           "type": "string",
+           "metadata": {
+                "description": "prefix used by all resources"
+            }
+        },
+        "webappSku": {
+           "type": "string",
+           "allowedValues": [
+               "F1", 
+               "S1"
+           ],
+           "defaultValue": "S1",
+           "metadata": {
+                "description": "description"
+            }
+        },
+        "region": {
+           "type": "string",
+           "defaultValue": "san",
+           "metadata": {
+                "description": "description"
+            }
+        }
+    },
+    "variables": {
+        "aspName": "[concat(parameters('prefix'), '-', parameters('name'), '-asp-', parameters('region'), '-', parameters('env'))]",
+        "webappName": "[concat(parameters('prefix'), '-', parameters('name'), '-wa-', parameters('region'), '-', parameters('env'))]"
+    },
+    "resources": [
+        {
+            "name": "[variables('aspName')]",
+            "type": "Microsoft.Web/serverfarms",
+            "apiVersion": "2018-02-01",
+            "location": "[resourceGroup().location]",
+            "sku": {
+                "name": "[parameters('webappSku')]",
+                "capacity": 1
+            },
+            "tags": {
+                "displayName": "[variables('aspName')]"
+            },
+            "properties": {
+                "name": "[variables('aspName')]"
+            }
+        },
+        {
+            "name": "[variables('webappName')]",
+            "type": "Microsoft.Web/sites",
+            "apiVersion": "2018-11-01",
+            "location": "[resourceGroup().location]",
+            "tags": {
+                "[concat('hidden-related:', resourceGroup().id, '/providers/Microsoft.Web/serverfarms/', variables('aspName'))]": "Resource",
+                "displayName": "[variables('webappName')]"
+            },
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/serverfarms', variables('aspName'))]"
+            ],
+            "properties": {
+                "name": "[variables('webappName')]",
+                "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', variables('aspName'))]"
+            }
+        }
+    ],
+    "outputs": {}
+}

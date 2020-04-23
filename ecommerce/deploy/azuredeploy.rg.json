@@ -20,10 +20,17 @@
            "metadata": {
                 "description": "location for the resource group"
             }
+        },
+        "region": {
+           "type": "string",
+           "defaultValue": "san",
+           "metadata": {
+                "description": "description"
+            }
         }
     },
     "variables": {
-        "rgName": "[concat(parameters('name'), '-', parameters('env'))]"
+        "rgName": "[concat(parameters('name'), '-', parameters('region'), '-', parameters('env'))]"
     },
     "resources": [
         {
