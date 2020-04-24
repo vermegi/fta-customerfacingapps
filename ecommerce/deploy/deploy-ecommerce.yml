@@ -10,43 +10,56 @@ trigger:
   paths:
     include:
       - ecommerce
-  
+
 pool:
   vmImage: 'ubuntu-latest'
 
-steps:
-- task: CopyFiles@2
-  inputs:
-    SourceFolder: 'ecommerce/deploy'
-    Contents: '**.json'
-    TargetFolder: '$(Build.ArtifactStagingDirectory)/arm'
+stages: 
+  - stage: Build
+    jobs: 
+    - job: Build
+      steps: 
+      - task: DotNetCoreCLI@2
+        inputs:
+          command: 'build'
+          projects: 'ecommerce/src/Relecloud.sln'
+  
+  - stage: Deploy Dev
+    jobs: 
+    - job: DeployDev
+      steps:
+      - task: CopyFiles@2
+        inputs:
+          SourceFolder: 'ecommerce/deploy'
+          Contents: '**.json'
+          TargetFolder: '$(Build.ArtifactStagingDirectory)/arm'
 
-- task: PublishBuildArtifacts@1
-  inputs:
-    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-    ArtifactName: 'drop'
-    publishLocation: 'Container'
+      - task: PublishBuildArtifacts@1
+        inputs:
+          PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+          ArtifactName: 'drop'
+          publishLocation: 'Container'
 
-- task: AzureResourceManagerTemplateDeployment@3
-  inputs:
-    deploymentScope: 'Subscription'
-    azureResourceManagerConnection: 'Azure CXP FTA Internal Subscription givermei(49e23c68-dee0-4c5b-8c21-74acea0a2662)'
-    subscriptionId: '49e23c68-dee0-4c5b-8c21-74acea0a2662'
-    location: 'South Africa North'
-    templateLocation: 'Linked artifact'
-    csmFile: '$(build.artifactstagingdirectory)/arm/azuredeploy.rg.json'
-    overrideParameters: '-name demo-fta-ecommerce -env dev -location southafricanorth -region san'
-    deploymentMode: 'Incremental'
+      - task: AzureResourceManagerTemplateDeployment@3
+        inputs:
+          deploymentScope: 'Subscription'
+          azureResourceManagerConnection: 'Azure CXP FTA Internal Subscription givermei(49e23c68-dee0-4c5b-8c21-74acea0a2662)'
+          subscriptionId: '49e23c68-dee0-4c5b-8c21-74acea0a2662'
+          location: 'South Africa North'
+          templateLocation: 'Linked artifact'
+          csmFile: '$(build.artifactstagingdirectory)/arm/azuredeploy.rg.json'
+          overrideParameters: '-name demo-fta-ecommerce -env dev -location southafricanorth -region san'
+          deploymentMode: 'Incremental'
 
-- task: AzureResourceManagerTemplateDeployment@3
-  inputs:
-    deploymentScope: 'Resource Group'
-    azureResourceManagerConnection: 'Azure CXP FTA Internal Subscription givermei(49e23c68-dee0-4c5b-8c21-74acea0a2662)'
-    subscriptionId: '49e23c68-dee0-4c5b-8c21-74acea0a2662'
-    action: 'Create Or Update Resource Group'
-    resourceGroupName: 'demo-fta-ecommerce-san-dev'
-    location: 'South Africa North'
-    templateLocation: 'Linked artifact'
-    csmFile: '$(build.artifactstagingdirectory)/arm/azuredeploy.app.json'
-    overrideParameters: '-name demo-fta-ecommerce -env dev -prefix gitte -region san'
-    deploymentMode: 'Incremental'
+      - task: AzureResourceManagerTemplateDeployment@3
+        inputs:
+          deploymentScope: 'Resource Group'
+          azureResourceManagerConnection: 'Azure CXP FTA Internal Subscription givermei(49e23c68-dee0-4c5b-8c21-74acea0a2662)'
+          subscriptionId: '49e23c68-dee0-4c5b-8c21-74acea0a2662'
+          action: 'Create Or Update Resource Group'
+          resourceGroupName: 'demo-fta-ecommerce-san-dev'
+          location: 'South Africa North'
+          templateLocation: 'Linked artifact'
+          csmFile: '$(build.artifactstagingdirectory)/arm/azuredeploy.app.json'
+          overrideParameters: '-name demo-fta-ecommerce -env dev -prefix gitte -region san'
+          deploymentMode: 'Incremental'
