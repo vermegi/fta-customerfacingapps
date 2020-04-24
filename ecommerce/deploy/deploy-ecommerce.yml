@@ -48,3 +48,4 @@ steps:
     csmFile: '$(build.artifactstagingdirectory)/arm/azuredeploy.app.json'
     overrideParameters: '-name demo-fta-ecommerce -env dev -location southafricanorth -prefix gitte -region san'
     deploymentMode: 'Incremental'
+    ResourceGroup: 'demo-fta-ecommerce-san-dev'
