@@ -24,7 +24,7 @@ stages:
           command: 'build'
           projects: 'ecommerce/src/Relecloud.sln'
   
-  - stage: Deploy Dev
+  - stage: DeployDev
     jobs: 
     - job: DeployDev
       steps:
