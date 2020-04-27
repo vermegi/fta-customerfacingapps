@@ -23,7 +23,7 @@ stages:
         displayName: 'Build solution'
         inputs:
           solution: 'ecommerce/**/*.sln'
-          vsVersion: 14.0
+          vsVersion: '14.0'
           configuration: 'Debug'
           clean: true      
   
