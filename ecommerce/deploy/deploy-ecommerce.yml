@@ -2,6 +2,10 @@
 # Start with a minimal pipeline that you can customize to build and deploy your code.
 # Add steps that build, run tests, deploy, and more:
 # https://aka.ms/yaml
+variables:
+  location: 'South Africa North'
+  locationshort: southafricanorth
+  region: 'san'
 
 trigger:
   branches:
@@ -35,42 +39,47 @@ stages:
           configuration: 'Debug'
           clean: true      
   
-  - stage: DeployDev
-    jobs: 
-    - job: DeployDev
-      steps:
       - task: CopyFiles@2
+        displayName: 'copy arm templates'
         inputs:
           SourceFolder: 'ecommerce/deploy'
           Contents: '**.json'
           TargetFolder: '$(Build.ArtifactStagingDirectory)/arm'
 
       - task: PublishBuildArtifacts@1
+        displayName: 'publish artifacts'
         inputs:
           PathtoPublish: '$(Build.ArtifactStagingDirectory)'
           ArtifactName: 'drop'
           publishLocation: 'Container'
 
+
+  - stage: DeployDev
+    jobs: 
+    - job: DeployDev
+      steps:
       - task: AzureResourceManagerTemplateDeployment@3
+        displayName: 'create resource group'
         inputs:
           deploymentScope: 'Subscription'
           azureResourceManagerConnection: 'Azure CXP FTA Internal Subscription givermei(49e23c68-dee0-4c5b-8c21-74acea0a2662)'
           subscriptionId: '49e23c68-dee0-4c5b-8c21-74acea0a2662'
-          location: 'South Africa North'
+          location: '$(location)'
           templateLocation: 'Linked artifact'
           csmFile: '$(build.artifactstagingdirectory)/arm/azuredeploy.rg.json'
-          overrideParameters: '-name demo-fta-ecommerce -env dev -location southafricanorth -region san'
+          overrideParameters: '-name demo-fta-ecommerce -env dev -location $(locationshort) -region $(region)'
           deploymentMode: 'Incremental'
 
       - task: AzureResourceManagerTemplateDeployment@3
+        displayName: 'deploy resources'
         inputs:
           deploymentScope: 'Resource Group'
           azureResourceManagerConnection: 'Azure CXP FTA Internal Subscription givermei(49e23c68-dee0-4c5b-8c21-74acea0a2662)'
           subscriptionId: '49e23c68-dee0-4c5b-8c21-74acea0a2662'
           action: 'Create Or Update Resource Group'
-          resourceGroupName: 'demo-fta-ecommerce-san-dev'
-          location: 'South Africa North'
+          resourceGroupName: 'demo-fta-ecommerce-$(region)-dev'
+          location: '$(location)'
           templateLocation: 'Linked artifact'
           csmFile: '$(build.artifactstagingdirectory)/arm/azuredeploy.app.json'
-          overrideParameters: '-name demo-fta-ecommerce -env dev -prefix gitte -region san'
+          overrideParameters: '-name demo-fta-ecommerce -env dev -prefix gitte -region $(region)'
           deploymentMode: 'Incremental'
