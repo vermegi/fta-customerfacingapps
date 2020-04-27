@@ -38,7 +38,7 @@ stages:
         inputs:
           solution: '$(workingDirectory)/**/*.sln'
           vsVersion: '16.0'
-          msbuildArgs: '--output $(outputDirectory)'
+          msbuildArgs: '-p:OutputPath=$(outputDirectory)'
           configuration: 'Debug'
           clean: true
 
