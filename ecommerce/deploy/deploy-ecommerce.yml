@@ -38,20 +38,6 @@ stages:
           vsVersion: '16.0'
           configuration: 'Debug'
           clean: true      
-  
-      - task: CopyFiles@2
-        displayName: 'copy arm templates'
-        inputs:
-          SourceFolder: 'ecommerce/deploy'
-          Contents: '**.json'
-          TargetFolder: '$(Build.ArtifactStagingDirectory)/arm'
-
-      - task: PublishBuildArtifacts@1
-        displayName: 'publish artifacts'
-        inputs:
-          PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-          ArtifactName: 'drop'
-          publishLocation: 'Container'
 
   - stage: DeployDev
     dependsOn: Build
