@@ -39,7 +39,7 @@ stages:
           configuration: 'Debug'
           clean: true 
 
-      - publish: $(System.DefaultWorkingDirectory)/bin/WebApp
+      - publish: $(System.DefaultWorkingDirectory)ecommerce/bin/WebApp
         artifact: WebApp    
 
   - stage: DeployDev
