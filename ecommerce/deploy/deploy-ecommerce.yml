@@ -21,9 +21,13 @@ stages:
       steps: 
       - task: DotNetCoreCLI@2
         inputs:
+          command: 'restore'
+          projects: 'ecommerce/src/Relecloud.sln'
+          feedsToUse: 'select'
+      - task: DotNetCoreCLI@2
+        inputs:
           command: 'build'
           projects: 'ecommerce/src/Relecloud.sln'
-          arguments: '-f netcoreapp2.2'
       
   
   - stage: DeployDev
