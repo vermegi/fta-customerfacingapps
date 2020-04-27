@@ -22,12 +22,12 @@ stages:
       - task: DotNetCoreCLI@2
         inputs:
           command: 'restore'
-          projects: 'ecommerce/src/Relecloud.sln'
+          projects: 'ecommerce/src/**/*.csproj'
           feedsToUse: 'select'
       - task: DotNetCoreCLI@2
         inputs:
           command: 'build'
-          projects: 'ecommerce/src/Relecloud.sln'
+          projects: 'ecommerce/src/**/*.csproj'
       
   
   - stage: DeployDev
