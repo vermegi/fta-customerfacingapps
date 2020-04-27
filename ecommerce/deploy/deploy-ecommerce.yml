@@ -28,7 +28,6 @@ stages:
         inputs:
           command: 'build'
           projects: 'ecommerce/src/Relecloud.sln'
-          arguments: '-f netcoreapp2.0'
       
   
   - stage: DeployDev
