@@ -37,7 +37,10 @@ stages:
           solution: 'ecommerce/**/*.sln'
           vsVersion: '16.0'
           configuration: 'Debug'
-          clean: true      
+          clean: true 
+
+      - publish: $(System.DefaultWorkingDirectory)/bin/WebApp
+        artifact: WebApp    
 
   - stage: DeployDev
     dependsOn: Build
@@ -71,11 +74,14 @@ stages:
           overrideParameters: '-name demo-fta-ecommerce -env dev -prefix gitte -region $(region) -sqlDatabaseAdministratorLogin theadmin -sqlDatabaseAdministratorPassword $(SQLPW)'
           deploymentMode: 'Incremental'
 
+      - download: current
+        artifact: WebApp
+
       - task: AzureWebApp@1
         displayName: 'deploy Relecloud web app'
         inputs:
           azureSubscription: 'Azure CXP FTA Internal Subscription givermei(49e23c68-dee0-4c5b-8c21-74acea0a2662)'
           appType: 'webApp'
           appName: 'gitte-demo-fta-ecommerce-wa-$(region)-dev'
-          package: '$(System.DefaultWorkingDirectory)/**/*.zip'
+          package: '$(Pipeline.Workspace)/WebApp/*.zip'
           deploymentMethod: 'auto'
