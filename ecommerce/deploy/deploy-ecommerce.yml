@@ -19,20 +19,13 @@ stages:
     jobs: 
     - job: Build
       steps: 
-      - task: UseDotNet@2
+      - task: VSBuild@1
+        displayName: 'Build solution'
         inputs:
-          packageType: 'sdk'
-          version: 'net461'
-      - task: DotNetCoreCLI@2
-        inputs:
-          command: 'restore'
-          projects: 'ecommerce/src/**/*.csproj'
-          feedsToUse: 'select'
-      - task: DotNetCoreCLI@2
-        inputs:
-          command: 'build'
-          projects: 'ecommerce/src/**/*.csproj'
-      
+          solution: 'ecommerce/**/*.sln'
+          vsVersion: 14.0
+          configuration: 'Debug'
+          clean: true      
   
   - stage: DeployDev
     jobs: 
