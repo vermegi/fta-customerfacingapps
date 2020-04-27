@@ -39,8 +39,8 @@ stages:
           configuration: 'Debug'
           clean: true 
 
-      - publish: ecommerce/bin
-        artifact: WebApp    
+      - publish: ecommerce/**/bin/Debug
+        artifact: WebApp
 
   - stage: DeployDev
     dependsOn: Build
