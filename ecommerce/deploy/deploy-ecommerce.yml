@@ -46,7 +46,7 @@ stages:
     dependsOn: Build
     condition: succeeded()
     jobs: 
-    - job: DeployDev
+    - job: DeployInfra
       steps:
       - task: AzureResourceManagerTemplateDeployment@3
         displayName: 'create resource group'
@@ -74,6 +74,8 @@ stages:
           overrideParameters: '-name demo-fta-ecommerce -env dev -prefix gitte -region $(region) -sqlDatabaseAdministratorLogin theadmin -sqlDatabaseAdministratorPassword $(SQLPW)'
           deploymentMode: 'Incremental'
 
+    - job: DeployApp
+      steps:
       - download: current
         artifact: WebApp
 
