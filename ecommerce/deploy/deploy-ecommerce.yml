@@ -54,10 +54,10 @@ stages:
           publishLocation: 'Container'
 
   - stage: DeployDev
+    dependsOn: Build
+    condition: succeeded()
     jobs: 
     - job: DeployDev
-      dependsOn: Build
-      condition: succeeded()
       steps:
       - task: AzureResourceManagerTemplateDeployment@3
         displayName: 'create resource group'
