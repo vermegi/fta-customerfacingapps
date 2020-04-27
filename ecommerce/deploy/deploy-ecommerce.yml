@@ -6,6 +6,8 @@ variables:
   location: 'South Africa North'
   locationshort: southafricanorth
   region: 'san'
+  workingDirectory: '$(System.DefaultWorkingDirectory)/ecommerce/src'
+  outputDirectory: '$(System.DefaultWorkingDirectory)/publish_output'
 
 trigger:
   branches:
@@ -34,12 +36,13 @@ stages:
       - task: VSBuild@1
         displayName: 'Build solution'
         inputs:
-          solution: 'ecommerce/**/*.sln'
+          solution: '$(workingDirectory)/**/*.sln'
           vsVersion: '16.0'
+          msbuildArgs: '--output $(outputDirectory)'
           configuration: 'Debug'
-          clean: true 
+          clean: true
 
-      - publish: ecommerce/**/bin/Debug
+      - publish: $(outputDirectory)
         artifact: WebApp
 
   - stage: DeployDev
