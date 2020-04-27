@@ -68,7 +68,7 @@ stages:
           location: '$(location)'
           templateLocation: 'Linked artifact'
           csmFile: 'ecommerce/deploy/azuredeploy.app.json'
-          overrideParameters: '-name demo-fta-ecommerce -env dev -prefix gitte -region $(region)'
+          overrideParameters: '-name demo-fta-ecommerce -env dev -prefix gitte -region $(region) -sqlDatabaseAdministratorLogin theadmin -sqlDatabaseAdministratorPassword $(SQLPW)'
           deploymentMode: 'Incremental'
 
       - task: AzureWebApp@1
