@@ -19,6 +19,14 @@ stages:
     jobs: 
     - job: Build
       steps: 
+      - task: NuGetToolInstaller@1
+        displayName: 'Use NuGet 5.5'
+        inputs:
+          versionSpec: 5.5
+    
+      - task: NuGetCommand@2
+        displayName: 'NuGet restore */.sln'
+        
       - task: VSBuild@1
         displayName: 'Build solution'
         inputs:
