@@ -75,6 +75,8 @@ stages:
           deploymentMode: 'Incremental'
 
     - job: DeployApp
+      dependsOn: DeployInfra
+      condition: succeeded()
       steps:
       - download: current
         artifact: WebApp
