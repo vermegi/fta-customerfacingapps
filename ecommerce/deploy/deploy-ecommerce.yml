@@ -53,10 +53,11 @@ stages:
           ArtifactName: 'drop'
           publishLocation: 'Container'
 
-
   - stage: DeployDev
     jobs: 
     - job: DeployDev
+      dependsOn: Build
+      condition: succeeded()
       steps:
       - task: AzureResourceManagerTemplateDeployment@3
         displayName: 'create resource group'
@@ -66,7 +67,7 @@ stages:
           subscriptionId: '49e23c68-dee0-4c5b-8c21-74acea0a2662'
           location: '$(location)'
           templateLocation: 'Linked artifact'
-          csmFile: '$(build.artifactstagingdirectory)/arm/azuredeploy.rg.json'
+          csmFile: '$(Pipeline.Workspace)/drop/arm/azuredeploy.rg.json'
           overrideParameters: '-name demo-fta-ecommerce -env dev -location $(locationshort) -region $(region)'
           deploymentMode: 'Incremental'
 
@@ -80,7 +81,7 @@ stages:
           resourceGroupName: 'demo-fta-ecommerce-$(region)-dev'
           location: '$(location)'
           templateLocation: 'Linked artifact'
-          csmFile: '$(build.artifactstagingdirectory)/arm/azuredeploy.app.json'
+          csmFile: '$(Pipeline.Workspace)/drop/arm/azuredeploy.app.json'
           overrideParameters: '-name demo-fta-ecommerce -env dev -prefix gitte -region $(region)'
           deploymentMode: 'Incremental'
 
