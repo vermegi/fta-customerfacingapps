@@ -36,7 +36,7 @@ stages:
       - task: VSBuild@1
         displayName: 'Build solution'
         inputs:
-          solution: '$(workingDirectory)/**/*.sln'
+          solution: '$(workingDirectory)/**/Relecloud.Web.csproj'
           vsVersion: '16.0'
           msbuildArgs: '-p:OutputPath=$(outputDirectory)'
           configuration: 'Debug'
