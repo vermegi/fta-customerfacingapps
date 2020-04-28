@@ -117,66 +117,66 @@
                 "name": "[variables('webappName')]",
                 "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', variables('aspName'))]"
             }
-        },
-        {
-            "name": "[variables('sqlServerName')]",
-            "type": "Microsoft.Sql/servers",
-            "location": "[resourceGroup().location]",
-            "tags": {
-                "displayName": "SqlServer"
-            },
-            "apiVersion": "2014-04-01-preview",
-            "properties": {
-                "administratorLogin": "[parameters('sqlDatabaseAdministratorLogin')]",
-                "administratorLoginPassword": "[parameters('sqlDatabaseAdministratorPassword')]"
-            },
-            "resources": [
-                {
-                "name": "[variables('sqlDatabaseName')]",
-                "type": "databases",
-                "location": "[resourceGroup().location]",
-                "tags": {
-                    "displayName": "Database"
-                },
-                "apiVersion": "2014-04-01-preview",
-                "dependsOn": [
-                    "[resourceId('Microsoft.Sql/servers/', variables('sqlServerName'))]"
-                ],
-                "properties": {
-                    "edition": "[parameters('sqlDatabaseEdition')]",
-                    "collation": "[parameters('sqlDatabaseCollation')]",
-                    "maxSizeBytes": "[parameters('sqlDatabaseMaxSizeBytes')]",
-                    "requestedServiceObjectiveName": "[parameters('sqlDatabaseRequestedServiceObjectiveName')]"
-                    }
-                },
-                {
-                "type": "firewallrules",
-                "apiVersion": "2014-04-01-preview",
-                "dependsOn": [
-                    "[resourceId('Microsoft.Sql/servers/', variables('sqlServerName'))]"
-                ],
-                "location": "[resourceGroup().location]",
-                "name": "AllowAllWindowsAzureIps",
-                "properties": {
-                    "endIpAddress": "0.0.0.0",
-                    "startIpAddress": "0.0.0.0"
-                    }
-                },
-                {
-                "type": "firewallrules",
-                "apiVersion": "2014-04-01-preview",
-                "dependsOn": [
-                    "[resourceId('Microsoft.Sql/servers/', variables('sqlServerName'))]"
-                ],
-                "location": "[resourceGroup().location]",
-                "name": "AllowAllIps",
-                "properties": {
-                    "endIpAddress": "255.255.255.255",
-                    "startIpAddress": "0.0.0.0"
-                    }
-                }
-            ]
         }
+        // {
+        //     "name": "[variables('sqlServerName')]",
+        //     "type": "Microsoft.Sql/servers",
+        //     "location": "[resourceGroup().location]",
+        //     "tags": {
+        //         "displayName": "SqlServer"
+        //     },
+        //     "apiVersion": "2014-04-01-preview",
+        //     "properties": {
+        //         "administratorLogin": "[parameters('sqlDatabaseAdministratorLogin')]",
+        //         "administratorLoginPassword": "[parameters('sqlDatabaseAdministratorPassword')]"
+        //     },
+        //     "resources": [
+        //         {
+        //         "name": "[variables('sqlDatabaseName')]",
+        //         "type": "databases",
+        //         "location": "[resourceGroup().location]",
+        //         "tags": {
+        //             "displayName": "Database"
+        //         },
+        //         "apiVersion": "2014-04-01-preview",
+        //         "dependsOn": [
+        //             "[resourceId('Microsoft.Sql/servers/', variables('sqlServerName'))]"
+        //         ],
+        //         "properties": {
+        //             "edition": "[parameters('sqlDatabaseEdition')]",
+        //             "collation": "[parameters('sqlDatabaseCollation')]",
+        //             "maxSizeBytes": "[parameters('sqlDatabaseMaxSizeBytes')]",
+        //             "requestedServiceObjectiveName": "[parameters('sqlDatabaseRequestedServiceObjectiveName')]"
+        //             }
+        //         },
+        //         {
+        //         "type": "firewallrules",
+        //         "apiVersion": "2014-04-01-preview",
+        //         "dependsOn": [
+        //             "[resourceId('Microsoft.Sql/servers/', variables('sqlServerName'))]"
+        //         ],
+        //         "location": "[resourceGroup().location]",
+        //         "name": "AllowAllWindowsAzureIps",
+        //         "properties": {
+        //             "endIpAddress": "0.0.0.0",
+        //             "startIpAddress": "0.0.0.0"
+        //             }
+        //         },
+        //         {
+        //         "type": "firewallrules",
+        //         "apiVersion": "2014-04-01-preview",
+        //         "dependsOn": [
+        //             "[resourceId('Microsoft.Sql/servers/', variables('sqlServerName'))]"
+        //         ],
+        //         "location": "[resourceGroup().location]",
+        //         "name": "AllowAllIps",
+        //         "properties": {
+        //             "endIpAddress": "255.255.255.255",
+        //             "startIpAddress": "0.0.0.0"
+        //             }
+        //         }
+        //     ]
+        // }
     ],
     "outputs": {}
 }
