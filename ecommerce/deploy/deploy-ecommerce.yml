@@ -91,5 +91,5 @@ stages:
           azureSubscription: 'Azure CXP FTA Internal Subscription givermei(49e23c68-dee0-4c5b-8c21-74acea0a2662)'
           appType: 'webApp'
           appName: 'gitte-demo-fta-ecommerce-wa-$(region)-dev'
-          package: '$(Pipeline.Workspace)/drop/$(Build.BuildId).zip'
+          package: '$(Pipeline.Workspace)/$(Build.BuildId).zip'
           deploymentMethod: 'auto'
