@@ -117,7 +117,7 @@
                 "name": "[variables('webappName')]",
                 "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', variables('aspName'))]"
             }
-        }
+        },
         {
             "name": "[variables('sqlServerName')]",
             "type": "Microsoft.Sql/servers",
