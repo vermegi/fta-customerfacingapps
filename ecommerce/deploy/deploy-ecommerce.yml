@@ -3,9 +3,9 @@
 # Add steps that build, run tests, deploy, and more:
 # https://aka.ms/yaml
 variables:
-  location: 'France Central'
-  locationshort: francecentral
-  region: 'frc'
+  location: 'West Europe'
+  locationshort: westeurope
+  region: 'weu'
   workingDirectory: '$(System.DefaultWorkingDirectory)/ecommerce/src'
   outputDirectory: '$(System.DefaultWorkingDirectory)/publish_output'
 
