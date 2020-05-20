@@ -116,7 +116,23 @@
             "properties": {
                 "name": "[variables('webappName')]",
                 "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', variables('aspName'))]"
-            }
+            },
+            "resources": [
+                {
+                "apiVersion": "2018-11-01",
+                "type": "config",
+                "name": "appsettings",
+                "dependsOn": [
+                    "[resourceId('Microsoft.Web/Sites/', variables('webappName'))]"
+                ],
+                "tags": {
+                    "displayName": "WebAppSettings"
+                },
+                "properties": {
+                    "App:SqlDatabase:ConnectionString": "[concat('Data Source=tcp:', reference(resourceId('Microsoft.Sql/servers/', variables('sqlServerName'))).fullyQualifiedDomainName, ',1433;Initial Catalog=', variables('sqlDatabaseName'), ';User Id=', parameters('sqlDatabaseAdministratorLogin'), '@', variables('sqlServerName'), ';Password=', parameters('sqlDatabaseAdministratorPassword'), ';')]"
+                }
+                }
+            ]
         },
         {
             "name": "[variables('sqlServerName')]",
