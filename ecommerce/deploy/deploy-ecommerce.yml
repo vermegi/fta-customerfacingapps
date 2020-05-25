@@ -34,6 +34,7 @@ stages:
       - task: DotNetCoreCLI@2
         inputs:
           command: 'publish'
+          projects: '$(workingDirectory)/**/Relecloud.Web.csproj'
           publishWebProjects: true
           arguments: '--output $(System.DefaultWorkingDirectory)\publish_output\$(Build.BuildId) --configuration Release'
           modifyOutputPath: false
