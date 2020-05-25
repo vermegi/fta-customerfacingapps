@@ -33,13 +33,13 @@ stages:
 
       - task: DotNetCoreCLI@2
         inputs:
-          command: 'publish'
+          command: publish
           projects: '$(workingDirectory)/**/Relecloud.Web.csproj'
-          publishWebProjects: true
-          arguments: '--configuration Release'
-          modifyOutputPath: true
+          publishWebProjects: True
+          arguments: '--configuration Release --output $(System.DefaultWorkingDirectory)'
+          zipAfterPublish: True
 
-      - publish: $(System.DefaultWorkingDirectory)\*.zip
+      - publish: $(System.DefaultWorkingDirectory)
         artifact: WebApp
 
   - stage: DeployDev
