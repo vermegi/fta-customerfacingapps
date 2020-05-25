@@ -35,10 +35,10 @@ stages:
         inputs:
           command: 'publish'
           publishWebProjects: true
-          arguments: '--output $(System.DefaultWorkingDirectory)\publish_output --configuration Release'
+          arguments: '--output $(System.DefaultWorkingDirectory)\publish_output\$(Build.BuildId) --configuration Release'
           modifyOutputPath: false
 
-      - publish: $(System.DefaultWorkingDirectory)\publish_output.zip
+      - publish: $(System.DefaultWorkingDirectory)\publish_output\$(Build.BuildId).zip
         artifact: WebApp
 
   - stage: DeployDev
