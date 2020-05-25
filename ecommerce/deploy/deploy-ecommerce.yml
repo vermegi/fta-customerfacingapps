@@ -29,17 +29,16 @@ stages:
         inputs:
           command: 'build'
           projects: '$(workingDirectory)/**/Relecloud.Web.csproj'
-          arguments: --output $(System.DefaultWorkingDirectory)/publish_output --configuration Release
-      - task: ArchiveFiles@2
-        displayName: 'Archive files'
-        inputs:
-          rootFolderOrFile: '$(System.DefaultWorkingDirectory)/publish_output'
-          includeRootFolder: false
-          archiveType: zip
-          archiveFile: $(System.DefaultWorkingDirectory)/publish_output/$(Build.BuildId).zip
-          replaceExistingArchive: true
+          arguments: --output $(System.DefaultWorkingDirectory)/build_output --configuration Release
 
-      - publish: $(System.DefaultWorkingDirectory)/publish_output/$(Build.BuildId).zip
+      - task: DotNetCoreCLI@2
+        inputs:
+          command: 'publish'
+          publishWebProjects: true
+          arguments: '--output $(System.DefaultWorkingDirectory)/publish_output --configuration Release'
+          modifyOutputPath: false
+
+      - publish: $(System.DefaultWorkingDirectory)/publish_output/*.zip
         artifact: WebApp
 
   - stage: DeployDev
@@ -86,5 +85,5 @@ stages:
           azureSubscription: 'Azure CXP FTA Internal Subscription givermei(49e23c68-dee0-4c5b-8c21-74acea0a2662)'
           appType: 'webApp'
           appName: 'gitte-demo-fta-ecommerce-wa-$(region)-dev'
-          package: '$(Pipeline.Workspace)/WebApp/$(Build.BuildId).zip'
+          package: '$(Pipeline.Workspace)/WebApp/*.zip'
           deploymentMethod: 'auto'
