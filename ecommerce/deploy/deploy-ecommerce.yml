@@ -35,10 +35,10 @@ stages:
         inputs:
           command: 'publish'
           publishWebProjects: true
-          arguments: '--output $(System.DefaultWorkingDirectory)/publish_output --configuration Release'
+          arguments: '--output $(System.DefaultWorkingDirectory)\publish_output --configuration Release'
           modifyOutputPath: false
 
-      - publish: $(System.DefaultWorkingDirectory)/publish_output.zip
+      - publish: $(System.DefaultWorkingDirectory)\publish_output.zip
         artifact: WebApp
 
   - stage: DeployDev
@@ -85,5 +85,5 @@ stages:
           azureSubscription: 'Azure CXP FTA Internal Subscription givermei(49e23c68-dee0-4c5b-8c21-74acea0a2662)'
           appType: 'webApp'
           appName: 'gitte-demo-fta-ecommerce-wa-$(region)-dev'
-          package: '$(Pipeline.Workspace)/WebApp/publish_output.zip'
+          package: '$(Pipeline.Workspace)\WebApp\publish_output.zip'
           deploymentMethod: 'auto'
