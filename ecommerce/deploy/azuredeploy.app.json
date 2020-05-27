@@ -185,8 +185,10 @@
                     "App:Authentication:Tenant": "[parameters('aadb2cTenant')]",
                     "App:Authentication:SignUpSignInPolicyId": "[parameters('aadb2cSignUpSignInPolicyId')]",
                     "App:Authentication:ResetPasswordPolicyId": "[parameters('aadb2cResetPasswordPolicyId')]",
-                    "App:Authentication:EditProfilePolicyId": "[parameters('aadb2cEditProfilePolicyId')]"
-                }
+                    "App:Authentication:EditProfilePolicyId": "[parameters('aadb2cEditProfilePolicyId')]",
+                    "App:AzureSearch:ServiceName": "[variables('searchServiceName')]",
+                    "App:AzureSearch:AdminKey": "[listAdminKeys(resourceId('Microsoft.Search/searchServices', variables('searchServiceName')), '2015-02-28').primaryKey]"
+                    }
                 }
             ]
         },
