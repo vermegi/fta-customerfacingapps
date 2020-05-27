@@ -71,7 +71,7 @@ stages:
           location: '$(location)'
           templateLocation: 'Linked artifact'
           csmFile: 'ecommerce/deploy/azuredeploy.app.json'
-          overrideParameters: '-name demo-fta-ecommerce -env dev -prefix gitte -region $(region) -sqlDatabaseAdministratorLogin theadmin -sqlDatabaseAdministratorPassword $(SQLPW)'
+          overrideParameters: '-name demo-fta-ecommerce -env dev -prefix gitte -region $(region) -sqlDatabaseAdministratorLogin theadmin -sqlDatabaseAdministratorPassword $(SQLPW) --aadb2cClientId $(aadb2cClientId) --aadb2cTenant $(aadb2cTenant) --aadb2cSignUpSignInPolicyId $(aadb2cSignUpSignInPolicyId) --aadb2cResetPasswordPolicyId $(aadb2cResetPasswordPolicyId) --aadb2cEditProfilePolicyId $(aadb2cEditProfilePolicyId)'
           deploymentMode: 'Incremental'
 
     - job: DeployApp
