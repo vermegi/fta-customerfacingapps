@@ -109,7 +109,7 @@
         },
         "searchServiceSkuName": {
             "type": "string",
-            "defaultValue": " basic",
+            "defaultValue": "basic",
             "allowedValues": [
                 "free",
                 "basic",
@@ -252,21 +252,21 @@
             ]
         },
         {
-        "apiVersion": "2015-08-19",
-        "name": "[variables('searchServiceName')]",
-        "location": "[resourceGroup().location]",
-        "sku": {
-            "name": "[parameters('searchServiceSkuName')]"
-        },
-        "type": "Microsoft.Search/searchServices",
-        "properties": {
-            "replicaCount": "[parameters('searchServiceReplicaCount')]",
-            "partitionCount": "[parameters('searchServicePartitionCount')]",
-            "hostingMode": "[variables('searchServiceHostingMode')]"
-        },
-        "tags": {
-            "displayName": "SearchService"
-        }
+            "apiVersion": "2015-08-19",
+            "name": "[variables('searchServiceName')]",
+            "location": "[resourceGroup().location]",
+            "sku": {
+                "name": "[parameters('searchServiceSkuName')]"
+            },
+            "type": "Microsoft.Search/searchServices",
+            "properties": {
+                "replicaCount": "[parameters('searchServiceReplicaCount')]",
+                "partitionCount": "[parameters('searchServicePartitionCount')]",
+                "hostingMode": "[variables('searchServiceHostingMode')]"
+            },
+            "tags": {
+                "displayName": "SearchService"
+            }
         }
     ],
     "outputs": {}
