@@ -106,13 +106,34 @@
             "metadata": {
                 "description": "description"
             }
-        }
+        },
+        "searchServiceSkuName": {
+            "type": "string",
+            "defaultValue": " basic",
+            "allowedValues": [
+                "free",
+                "basic",
+                "standard",
+                "standard2",
+                "standard3"
+            ]
+        },
+        "searchServiceReplicaCount": {
+            "type": "int",
+            "defaultValue": 1
+        },
+        "searchServicePartitionCount": {
+            "type": "int",
+            "defaultValue": 1
+        }        
     },
     "variables": {
         "aspName": "[concat(parameters('prefix'), '-', parameters('name'), '-asp-', parameters('region'), '-', parameters('env'))]",
         "webappName": "[concat(parameters('prefix'), '-', parameters('name'), '-wa-', parameters('region'), '-', parameters('env'))]",
         "sqlDatabaseName": "[concat(parameters('prefix'), '-', parameters('name'), 'sql-database-', parameters('region'), '-', parameters('env'))]",
-        "sqlServerName": "[concat(parameters('prefix'), '-', parameters('name'), 'sql-server-', parameters('region'), '-', parameters('env'))]"
+        "sqlServerName": "[concat(parameters('prefix'), '-', parameters('name'), 'sql-server-', parameters('region'), '-', parameters('env'))]",
+        "searchServiceName": "[concat(parameters('prefix'), '-', parameters('name'), '-srh-', parameters('region'), '-', parameters('env'))]",
+        "searchServiceHostingMode": "Default"
     },
     "resources": [
         {
@@ -227,6 +248,23 @@
                     }
                 }
             ]
+        },
+        {
+        "apiVersion": "2015-08-19",
+        "name": "[variables('searchServiceName')]",
+        "location": "[resourceGroup().location]",
+        "sku": {
+            "name": "[parameters('searchServiceSkuName')]"
+        },
+        "type": "Microsoft.Search/searchServices",
+        "properties": {
+            "replicaCount": "[parameters('searchServiceReplicaCount')]",
+            "partitionCount": "[parameters('searchServicePartitionCount')]",
+            "hostingMode": "[variables('searchServiceHostingMode')]"
+        },
+        "tags": {
+            "displayName": "SearchService"
+        }
         }
     ],
     "outputs": {}
