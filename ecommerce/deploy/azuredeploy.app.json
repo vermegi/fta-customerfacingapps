@@ -145,7 +145,8 @@
         "sqlServerName": "[concat(parameters('prefix'), '-', parameters('name'), 'sql-server-', parameters('region'), '-', parameters('env'))]",
         "searchServiceName": "[concat(parameters('prefix'), '-', parameters('name'), '-srh-', parameters('region'), '-', parameters('env'))]",
         "searchServiceHostingMode": "Default",
-        "storageAccountName": "[concat(parameters('prefix'), '-', parameters('name'), '-str-', parameters('region'), '-', parameters('env'))]"
+        "storageAccountName": "[concat(parameters('prefix'), '-', parameters('name'), '-str-', parameters('region'), '-', parameters('env'))]",
+        "eventQueueName": "events"
     },
     "resources": [
         {
@@ -199,7 +200,9 @@
                     "App:Authentication:ResetPasswordPolicyId": "[parameters('aadb2cResetPasswordPolicyId')]",
                     "App:Authentication:EditProfilePolicyId": "[parameters('aadb2cEditProfilePolicyId')]",
                     "App:AzureSearch:ServiceName": "[variables('searchServiceName')]",
-                    "App:AzureSearch:AdminKey": "[listAdminKeys(resourceId('Microsoft.Search/searchServices', variables('searchServiceName')), '2015-02-28').primaryKey]"
+                    "App:AzureSearch:AdminKey": "[listAdminKeys(resourceId('Microsoft.Search/searchServices', variables('searchServiceName')), '2015-02-28').primaryKey]",
+                    "App:StorageAccount:ConnectionString": "[concat('DefaultEndpointsProtocol=https;AccountName=',variables('storageAccountName'),';AccountKey=',concat(listKeys(concat(resourceGroup().id,'/providers/Microsoft.Storage/storageAccounts/', variables('storageAccountName')),'2015-05-01-preview').key1))]",
+                    "App:StorageAccount:EventQueueName": "[variables('eventQueueName')]"
                     }
                 }
             ]
