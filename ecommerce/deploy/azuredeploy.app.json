@@ -76,6 +76,36 @@
             "metadata": {
                 "description": "Describes the performance level for Edition"
             }
+        },
+        "aadb2cClientId": {
+            "type": "string",
+            "metadata": {
+                "description": "description"
+            }
+        },
+        "aadb2cTenant": {
+            "type": "string",
+            "metadata": {
+                "description": "description"
+            }
+        },
+        "aadb2cSignUpSignInPolicyId": {
+            "type": "string",
+            "metadata": {
+                "description": "description"
+            }
+        },
+        "aadb2cResetPasswordPolicyId": {
+            "type": "string",
+            "metadata": {
+                "description": "description"
+            }
+        },
+        "aadb2cEditProfilePolicyId": {
+            "type": "string",
+            "metadata": {
+                "description": "description"
+            }
         }
     },
     "variables": {
@@ -129,7 +159,12 @@
                     "displayName": "WebAppSettings"
                 },
                 "properties": {
-                    "App:SqlDatabase:ConnectionString": "[concat('Data Source=tcp:', reference(resourceId('Microsoft.Sql/servers/', variables('sqlServerName'))).fullyQualifiedDomainName, ',1433;Initial Catalog=', variables('sqlDatabaseName'), ';User Id=', parameters('sqlDatabaseAdministratorLogin'), '@', variables('sqlServerName'), ';Password=', parameters('sqlDatabaseAdministratorPassword'), ';')]"
+                    "App:SqlDatabase:ConnectionString": "[concat('Data Source=tcp:', reference(resourceId('Microsoft.Sql/servers/', variables('sqlServerName'))).fullyQualifiedDomainName, ',1433;Initial Catalog=', variables('sqlDatabaseName'), ';User Id=', parameters('sqlDatabaseAdministratorLogin'), '@', variables('sqlServerName'), ';Password=', parameters('sqlDatabaseAdministratorPassword'), ';')]",
+                    "App:Authentication:ClientId": "[parameters('aadb2cClientId')]",
+                    "App:Authentication:Tenant": "[parameters('aadb2cTenant')]",
+                    "App:Authentication:SignUpSignInPolicyId": "[parameters('aadb2cSignUpSignInPolicyId')]",
+                    "App:Authentication:ResetPasswordPolicyId": "[parameters('aadb2cResetPasswordPolicyId')]",
+                    "App:Authentication:EditProfilePolicyId": "[parameters('aadb2cEditProfilePolicyId')]"
                 }
                 }
             ]
