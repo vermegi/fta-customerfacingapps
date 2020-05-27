@@ -125,7 +125,18 @@
         "searchServicePartitionCount": {
             "type": "int",
             "defaultValue": 1
-        }        
+        },
+        "storageAccountType": {
+        "type": "string",
+        "defaultValue": "Standard_LRS",
+        "allowedValues": [
+            "Standard_LRS",
+            "Standard_ZRS",
+            "Standard_GRS",
+            "Standard_RAGRS",
+            "Premium_LRS"
+        ]
+        }      
     },
     "variables": {
         "aspName": "[concat(parameters('prefix'), '-', parameters('name'), '-asp-', parameters('region'), '-', parameters('env'))]",
@@ -133,7 +144,8 @@
         "sqlDatabaseName": "[concat(parameters('prefix'), '-', parameters('name'), 'sql-database-', parameters('region'), '-', parameters('env'))]",
         "sqlServerName": "[concat(parameters('prefix'), '-', parameters('name'), 'sql-server-', parameters('region'), '-', parameters('env'))]",
         "searchServiceName": "[concat(parameters('prefix'), '-', parameters('name'), '-srh-', parameters('region'), '-', parameters('env'))]",
-        "searchServiceHostingMode": "Default"
+        "searchServiceHostingMode": "Default",
+        "storageAccountName": "[concat(parameters('prefix'), '-', parameters('name'), '-str-', parameters('region'), '-', parameters('env'))]"
     },
     "resources": [
         {
@@ -267,6 +279,20 @@
             "tags": {
                 "displayName": "SearchService"
             }
+        },
+        {
+            "name": "[variables('storageAccountName')]",
+            "type": "Microsoft.Storage/storageAccounts",
+            "location": "[resourceGroup().location]",
+            "apiVersion": "2016-01-01",
+            "sku": {
+                "name": "[parameters('storageAccountType')]"
+            },
+            "dependsOn": [],
+            "tags": {
+                "displayName": "StorageAccount"
+            },
+            "kind": "Storage"
         }
     ],
     "outputs": {}
