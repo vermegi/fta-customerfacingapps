@@ -8,6 +8,12 @@
                 "description": "The name for your resource group"
             }
         },
+        "shortname": {
+            "type": "string",
+            "metadata": {
+                "description": "short name for storage account creation"
+            }
+        },
         "env": {
            "type": "string",
            "metadata": {
