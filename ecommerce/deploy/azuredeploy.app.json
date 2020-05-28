@@ -145,7 +145,7 @@
         "sqlServerName": "[concat(parameters('prefix'), '-', parameters('name'), 'sql-server-', parameters('region'), '-', parameters('env'))]",
         "searchServiceName": "[concat(parameters('prefix'), '-', parameters('name'), '-srh-', parameters('region'), '-', parameters('env'))]",
         "searchServiceHostingMode": "Default",
-        "storageAccountName": "[concat(parameters('prefix'), '-', parameters('name'), '-str-', parameters('region'), '-', parameters('env'))]",
+        "storageAccountName": "[concat(parameters('prefix'), parameters('name'), 'str', parameters('region'), parameters('env'))]",
         "eventQueueName": "events"
     },
     "resources": [
