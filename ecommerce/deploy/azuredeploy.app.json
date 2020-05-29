@@ -152,7 +152,9 @@
         "searchServiceName": "[concat(parameters('prefix'), '-', parameters('name'), '-srh-', parameters('region'), '-', parameters('env'))]",
         "searchServiceHostingMode": "Default",
         "storageAccountName": "[concat(parameters('prefix'), parameters('shortname'), 'str', parameters('region'), parameters('env'))]",
-        "eventQueueName": "events"
+        "eventQueueName": "events",
+        "functionPlanName": "[concat(parameters('prefix'), '-', parameters('name'), '-aspfunc-', parameters('region'), '-', parameters('env'))]",
+        "functionAppName": "[concat(parameters('prefix'), '-', parameters('name'), '-func-', parameters('region'), '-', parameters('env'))]"
     },
     "resources": [
         {
@@ -302,7 +304,63 @@
                 "displayName": "StorageAccount"
             },
             "kind": "Storage"
+        },
+    {
+      "apiVersion": "2018-02-01",
+      "type": "Microsoft.Web/serverfarms",
+      "name": "[variables('functionPlanName')]",
+      "location": "[resourceGroup().location]",
+      "properties": {
+        "name": "[variables('functionPlanName')]",
+        "computeMode": "Dynamic",
+        "sku": "Dynamic"
+      },
+      "tags": {
+        "displayName": "FunctionAppPlan"
+      }
+    },
+    {
+      "apiVersion": "2018-11-01",
+      "name": "[variables('functionAppName')]",
+      "location": "[resourceGroup().location]",
+      "type": "Microsoft.Web/sites",
+      "dependsOn": [
+        "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName'))]",
+        "[resourceId('Microsoft.Web/serverfarms', variables('functionPlanName'))]"
+      ],
+      "properties": {
+        "name": "[variables('functionAppName')]",
+        "clientAffinityEnabled": false
+      },
+      "kind": "functionapp",
+      "tags": {
+        "displayName": "FunctionApp"
+      },
+      "resources": [
+        {
+          "name": "appsettings",
+          "type": "config",
+          "apiVersion": "2018-11-01",
+          "dependsOn": [
+            "[resourceId('Microsoft.Web/sites', variables('functionAppName'))]"
+          ],
+          "tags": {
+            "displayName": "FunctionAppSettings"
+          },
+          "properties": {
+            "AzureWebJobsDashboard": "[concat('DefaultEndpointsProtocol=https;AccountName=',variables('storageAccountName'),';AccountKey=',listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName')), '2015-05-01-preview').key1)]",
+            "AzureWebJobsStorage": "[concat('DefaultEndpointsProtocol=https;AccountName=',variables('storageAccountName'),';AccountKey=',listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName')), '2015-05-01-preview').key1)]",
+            "FUNCTIONS_EXTENSION_VERSION": "~1",
+            "WEBSITE_CONTENTAZUREFILECONNECTIONSTRING": "[concat('DefaultEndpointsProtocol=https;AccountName=',variables('storageAccountName'),';AccountKey=',listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName')), '2015-05-01-preview').key1)]",
+            "WEBSITE_CONTENTSHARE": "[toLower(variables('functionAppName'))]",
+            "WEBSITE_NODE_DEFAULT_VERSION": "6.5.0",
+            "App:SqlDatabase:ConnectionString": "[concat('Data Source=tcp:', reference(resourceId('Microsoft.Sql/servers/', variables('sqlServerName'))).fullyQualifiedDomainName, ',1433;Initial Catalog=', variables('sqlDatabaseName'), ';User Id=', parameters('sqlDatabaseAdministratorLogin'), '@', variables('sqlServerName'), ';Password=', parameters('sqlDatabaseAdministratorPassword'), ';')]",
+            "App:StorageAccount:ConnectionString": "[concat('DefaultEndpointsProtocol=https;AccountName=',variables('storageAccountName'),';AccountKey=',concat(listKeys(concat(resourceGroup().id,'/providers/Microsoft.Storage/storageAccounts/', variables('storageAccountName')),'2015-05-01-preview').key1))]",
+            "App:StorageAccount:EventQueueName": "[variables('eventQueueName')]"
+          }
         }
+      ]
+    }
     ],
     "outputs": {}
 }
